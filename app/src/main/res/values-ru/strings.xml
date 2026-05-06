@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Paynet(Clone)</string>
+    <string name="profile">Профиль</string>
+    <string name="my_data">Мои данные</string>
+    <string name="personal_cabinet">Личный кабинет</string>
+    <string name="support">Поддержка</string>
+    <string name="chat_assistant">Чат-помощник</string>
+    <string name="call">Позвонить</string>
+    <string name="write_email">Написать Email</string>
+    <string name="useful_info">Полезная информация</string>
+    <string name="about_paynet">О Paynet</string>
+    <string name="paynet_branches">Точки пополнения Paynet</string>
+    <string name="reference">Справка</string>
+    <string name="app_settings">Настройки приложения</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="logout">Выйти из профиля</string>
+    <string name="back">Назад</string>
+    <string name="go">Перейти</string>
+    <string name="exit">Выход</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="language_en">English</string>
+    <string name="language_uz">O\'zbekcha</string>
+    <string name="language_ru">Русский</string>
+    <string name="language">Язык</string>
+    <string name="theme">Тема</string>
+
+    <!-- Home Screen -->
+    <string name="my_money">Мои деньги</string>
+    <string name="zero_som">0 сум</string>
+    <string name="transfer_to_card">Перевод на карту</string>
+    <string name="partially_protected">Частично защищен</string>
+    <string name="nav_main">Главная</string>
+    <string name="nav_transfers">Переводы</string>
+    <string name="nav_payment">Оплата</string>
+    <string name="nav_history">История</string>
+    <string name="nav_services">Услуги</string>
+    <string name="promo_visa_direct">Visa Direct</string>
+    <string name="promo_crypto">Крипто-активы</string>
+    <string name="promo_kindergarten">Оплата за садик</string>
+    <string name="promo_goodness">Добро</string>
+    <string name="stat_cashback">Кэшбек</string>
+    <string name="stat_today_zero">Сегодня: 0 сум</string>
+    <string name="stat_coins">Монеты</string>
+    <string name="stat_exchange">Обмен ></string>
+    <string name="my_cards">Мои карты</string>
+    <string name="add_plus">+ Добавить</string>
+    <string name="my_homes">Мои дома</string>
+    <string name="paynet_card_desc">• 3540 Paynet карта</string>
+    <string name="language_select">Выберите язык</string>
+    <string name="language_select_desc">вы можете изменить в настройках профиля</string>
+
+    <!-- Auth / Components -->
+    <string name="enter_sms_code">Введите код из SMS</string>
+    <string name="code_sent_to">Мы отправили на номер %s</string>
+    <string name="enter_phone_number">Введите номер</string>
+    <string name="to_become_client">Чтобы стать клиентом или войти</string>
+    <string name="continue_btn">Продолжить</string>
+    <string name="by_clicking_continue_i_agree">"Продолжить", я </string>
+    <string name="terms_of_service">принимаю условия оферты</string>
+    <string name="and_consent_to_data_processing"> и даю согласие на обработку персональных данных</string>
+    <string name="resend_code">Отправить код еще раз</string>
+    <string name="seconds_short">сек</string>
+</resources>
