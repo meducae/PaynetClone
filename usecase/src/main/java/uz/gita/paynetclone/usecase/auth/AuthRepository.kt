@@ -6,4 +6,5 @@ interface AuthRepository {
     suspend fun sendOtp(phone: String): Result<Unit>
     suspend fun verifyOtp(phone: String, otp: String): Result<AuthResult>
     suspend fun setPin(pin: String): Result<Unit>
+    suspend fun logout(): Result<Unit>
 }

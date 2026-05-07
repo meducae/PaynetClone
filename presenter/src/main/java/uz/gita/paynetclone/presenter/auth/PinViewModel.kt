@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.gita.paynetclone.usecase.auth.SetPinUseCase
+import uz.gita.paynetclone.core.common.TokenManager
+import uz.gita.paynetclone.presenter.common.UiText
+import uz.gita.paynetclone.presenter.R
 import javax.inject.Inject
 
 enum class PinMode {
@@ -22,7 +25,7 @@ data class PinState(
     val pin: String = "",
     val confirmPin: String = "",
     val mode: PinMode = PinMode.ENTER,
-    val error: String? = null,
+    val error: UiText? = null,
     val isLoading: Boolean = false
 )
 
@@ -35,12 +38,13 @@ sealed interface PinIntent {
 
 sealed interface PinSideEffect {
     data object NavigateToHome : PinSideEffect
-    data class ShowError(val message: String) : PinSideEffect
+    data class ShowError(val message: UiText) : PinSideEffect
 }
 
 @HiltViewModel
 class PinViewModel @Inject constructor(
-    private val setPinUseCase: SetPinUseCase
+    private val setPinUseCase: SetPinUseCase,
+    private val tokenManager: TokenManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PinState())
@@ -86,13 +90,24 @@ class PinViewModel @Inject constructor(
                 if (enteredPin == currentState.confirmPin) {
                     submitPin(enteredPin)
                 } else {
-                    _state.update { it.copy(pin = "", error = "PIN codes do not match") }
+                    _state.update { it.copy(pin = "", error = UiText.StringResource(R.string.error_pin_mismatch)) }
                 }
             }
             PinMode.ENTER -> {
-                // For now, treat entering PIN as success if it's 4 digits
-                // In a real app, you'd verify against local storage or backend
-                submitPin(enteredPin)
+                verifyLocalPin(enteredPin)
+            }
+        }
+    }
+
+    private fun verifyLocalPin(enteredPin: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            val savedPin = tokenManager.getPin()
+            if (savedPin == enteredPin) {
+                _state.update { it.copy(isLoading = false) }
+                _sideEffect.emit(PinSideEffect.NavigateToHome)
+            } else {
+                _state.update { it.copy(isLoading = false, pin = "", error = UiText.StringResource(R.string.error_wrong_pin)) }
             }
         }
     }
@@ -102,12 +117,14 @@ class PinViewModel @Inject constructor(
             _state.update { it.copy(isLoading = true) }
             setPinUseCase(pin)
                 .onSuccess {
+                    tokenManager.savePin(pin)
                     _state.update { it.copy(isLoading = false) }
                     _sideEffect.emit(PinSideEffect.NavigateToHome)
                 }
                 .onFailure { throwable ->
-                    _state.update { it.copy(isLoading = false, pin = "", error = throwable.message) }
-                    _sideEffect.emit(PinSideEffect.ShowError(throwable.message ?: "Failed to set PIN"))
+                    val errorMessage = throwable.message ?: "Failed to set PIN"
+                    _state.update { it.copy(isLoading = false, pin = "", error = UiText.DynamicString(errorMessage)) }
+                    _sideEffect.emit(PinSideEffect.ShowError(UiText.DynamicString(errorMessage)))
                 }
         }
     }

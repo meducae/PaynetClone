@@ -41,8 +41,6 @@ kotlin {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":entity"))
-    implementation(project(":usecase"))
     implementation(project(":presenter"))
     implementation(project(":data"))
 
@@ -64,10 +62,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
-    implementation(libs.navigation.compose)
     implementation(libs.voyager.navigator)
-    implementation(libs.voyager.hilt)
     implementation(libs.voyager.transitions)
 }

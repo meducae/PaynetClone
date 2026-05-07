@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.gita.paynetclone.usecase.auth.SendOtpUseCase
 import uz.gita.paynetclone.usecase.auth.VerifyOtpUseCase
-import uz.gita.paynetclone.core.utils.PrefsManager
+import uz.gita.paynetclone.core.common.TokenManager
 import javax.inject.Inject
 
 data class AuthState(
@@ -41,7 +41,8 @@ sealed interface AuthSideEffect {
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val sendOtpUseCase: SendOtpUseCase,
-    private val verifyOtpUseCase: VerifyOtpUseCase
+    private val verifyOtpUseCase: VerifyOtpUseCase,
+    private val tokenManager: TokenManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthState())
@@ -89,23 +90,24 @@ class AuthViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true, error = null) }
 
         viewModelScope.launch {
-            verifyOtpUseCase(currentState.phone, currentState.otp)
-                .onSuccess { authResult ->
-                    _state.update { it.copy(isLoading = false) }
-                    
-                    PrefsManager.saveTokens(authResult.accessToken, authResult.refreshToken)
+            val result = verifyOtpUseCase(currentState.phone, currentState.otp)
+            if (result.isSuccess) {
+                val authResult = result.getOrThrow()
+                _state.update { it.copy(isLoading = false) }
 
-                    if (authResult.isNewUser) {
-                        _sideEffect.emit(AuthSideEffect.NavigateToPinScreen(isNewUser = true))
-                    } else {
-                        _sideEffect.emit(AuthSideEffect.NavigateToPinScreen(isNewUser = false))
-                    }
+                tokenManager.saveTokens(authResult.accessToken, authResult.refreshToken)
+                
+                if (authResult.isNewUser) {
+                    _sideEffect.emit(AuthSideEffect.NavigateToPinScreen(isNewUser = true))
+                } else {
+                    _sideEffect.emit(AuthSideEffect.NavigateToPinScreen(isNewUser = false))
                 }
-                .onFailure { throwable ->
-                    val message = throwable.message ?: "Invalid OTP"
-                    _state.update { it.copy(isLoading = false, error = message) }
-                    _sideEffect.emit(AuthSideEffect.ShowError(message))
-                }
+            } else {
+                val throwable = result.exceptionOrNull()
+                val message = throwable?.message ?: "Invalid OTP"
+                _state.update { it.copy(isLoading = false, error = message) }
+                _sideEffect.emit(AuthSideEffect.ShowError(message))
+            }
         }
     }
 }

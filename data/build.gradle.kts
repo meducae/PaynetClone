@@ -46,4 +46,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    debugImplementation(libs.chucker.library)
+    releaseImplementation(libs.chucker.library.no.op)
 }
