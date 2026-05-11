@@ -60,9 +60,12 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.leakcanary.android)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.voyager.navigator)
+    implementation(libs.voyager.hilt)
     implementation(libs.voyager.transitions)
+    implementation(project(":entity"))
 }

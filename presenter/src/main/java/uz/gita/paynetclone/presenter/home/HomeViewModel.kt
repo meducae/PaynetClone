@@ -9,20 +9,26 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.gita.paynetclone.core.common.AuthEventBus
+import uz.gita.paynetclone.core.common.CardEvent
+import uz.gita.paynetclone.core.common.CardEventBus
 import uz.gita.paynetclone.core.common.TokenManager
 import uz.gita.paynetclone.usecase.auth.LogoutUseCase
+import uz.gita.paynetclone.usecase.card.GetCardsUseCase
 import uz.gita.paynetclone.usecase.user.GetProfileUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUseCase,
+    private val getCardsUseCase: GetCardsUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val tokenManager: TokenManager,
-    private val authEventBus: AuthEventBus
+    private val authEventBus: AuthEventBus,
+    private val cardEventBus: CardEventBus
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeContract.State())
@@ -33,6 +39,20 @@ class HomeViewModel @Inject constructor(
 
     init {
         onEvent(HomeContract.Intent.LoadProfile)
+        loadCards()
+        listenCardEvents()
+    }
+
+    private fun listenCardEvents() {
+        viewModelScope.launch {
+            cardEventBus.events.collectLatest { event ->
+                when (event) {
+                    CardEvent.CardAdded -> {
+                        loadCards()
+                    }
+                }
+            }
+        }
     }
 
     fun onEvent(event: HomeContract.Intent) {
@@ -45,6 +65,16 @@ class HomeViewModel @Inject constructor(
                     _sideEffect.emit(HomeContract.SideEffect.NavigateToSettings)
                 }
             }
+            HomeContract.Intent.OnAddedClicked ->{
+                viewModelScope.launch {
+                    _sideEffect.emit(HomeContract.SideEffect.NavigateToAddCard)
+                }
+            }
+            HomeContract.Intent.OnMyCardsClicked -> {
+                viewModelScope.launch {
+                    _sideEffect.emit(HomeContract.SideEffect.NavigateToMyCards)
+                }
+            }
             HomeContract.Intent.OnChatClicked -> {
                 viewModelScope.launch {
                     _sideEffect.emit(HomeContract.SideEffect.NavigateToChat)
@@ -52,6 +82,11 @@ class HomeViewModel @Inject constructor(
             }
             HomeContract.Intent.LoadProfile -> {
                 loadProfile()
+                loadCards()
+            }
+            HomeContract.Intent.Refresh -> {
+                loadProfile()
+                loadCards()
             }
             HomeContract.Intent.Logout -> {
                 logout()
@@ -76,6 +111,19 @@ class HomeViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     _state.update { it.copy(isLoading = false, error = throwable.message) }
+                }
+        }
+    }
+
+    private fun loadCards() {
+        viewModelScope.launch {
+            getCardsUseCase()
+                .collect { result ->
+                    result.onSuccess { cards ->
+                        _state.update { it.copy(cards = cards) }
+                    }.onFailure { throwable ->
+                        _state.update { it.copy(error = throwable.message) }
+                    }
                 }
         }
     }

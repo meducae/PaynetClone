@@ -1,3 +1,207 @@
 <resources>
-    <string name="app_name">Paynet Clone</string>
+    <string name="app_name">Paynet(Clone)</string>
+    <string name="profile">Profil</string>
+    <string name="my_data">Mening ma\'lumotlarim</string>
+    <string name="personal_cabinet">Shaxsiy kabinet</string>
+    <string name="support">Qo\'llab-quvvatlash</string>
+    <string name="chat_assistant">Chat yordamchi</string>
+    <string name="call">Qo\'ng\'iroq qilish</string>
+    <string name="write_email">Email yozish</string>
+    <string name="useful_info">Foydali ma\'lumot</string>
+    <string name="about_paynet">Paynet haqida</string>
+    <string name="paynet_branches">Paynet to\'ldirish shoxobchalari</string>
+    <string name="reference">Ma\'lumotnoma</string>
+    <string name="app_settings">Ilova sozlamalari</string>
+    <string name="rate_app">Ilovani baholang</string>
+    <string name="logout">Profildan chiqish</string>
+    <string name="back">Orqaga</string>
+    <string name="go">O\'tish</string>
+    <string name="exit">Chiqish</string>
+    <string name="theme_system">Tizim</string>
+    <string name="theme_light">Yorug\'</string>
+    <string name="theme_dark">Qorong\'u</string>
+    <string name="language_en">English</string>
+    <string name="language_uz">O\'zbekcha</string>
+    <string name="language_ru">Русский</string>
+    <string name="language">Til</string>
+    <string name="theme">Mavzu</string>
+
+    <!-- Home Screen -->
+    <string name="my_money">Mening pulim</string>
+    <string name="zero_som">0 so\'m</string>
+    <string name="som">so\'m</string>
+    <string name="transfer_to_card">Kartaga o\'tkazma</string>
+    <string name="partially_protected">Qisman himoyalangan</string>
+    <string name="nav_main">Asosiy</string>
+    <string name="nav_transfers">O\'tkazmalar</string>
+    <string name="nav_payment">To\'lov</string>
+    <string name="nav_history">Tarix</string>
+    <string name="nav_services">Xizmatlar</string>
+    <string name="search_hint">Karta yoki telefon</string>
+    <string name="uzum_tbc_banner_text">Uzum Bank va TBC VISA kartalariga pul o\'tkazing</string>
+    <string name="recent">Oxirgi</string>
+    <string name="by_template">Shablon bo\'yicha</string>
+    <string name="empty_transfers_title">Birinchi o\'tkazmani bajaring</string>
+    <string name="empty_transfers_desc">Va shu yerda ma\'lumot paydo bo\'ladi</string>
+    <string name="identification_details">Tafsilotlarni bilish</string>
+    <string name="transfer_header">O\'tkazish</string>
+    <string name="to_my_cards">O\'z kartalarimga</string>
+    <string name="to_my_cards_desc">Paynet-karta, Humo, Uzcard</string>
+    <string name="to_atto">ATTO kartaga</string>
+    <string name="to_atto_desc">Avtobus, metro</string>
+    <string name="promo_visa_direct">Visa Direct</string>
+    <string name="promo_crypto">Kripto-aktivlar</string>
+    <string name="promo_kindergarten">Bog\'cha to\'lov</string>
+    <string name="promo_goodness">Yaxshilik</string>
+    <string name="stat_cashback">Keshbek</string>
+    <string name="stat_today_zero">Bugun: 0 so\'m</string>
+    <string name="stat_coins">Tangalar</string>
+    <string name="stat_exchange">Ayirboshlash ></string>
+    <string name="my_cards">Kartalarim</string>
+    <string name="my_cards_title">Mening kartalarim</string>
+    <string name="add_card_btn">Karta qo\'shish</string>
+    <string name="paynet_card_name">Paynet karta</string>
+    <string name="copy_to_clipboard">Vaqtincha xotiraga nusxalandi</string>
+    <string name="add_plus">+ Qo\'shish</string>
+    <string name="my_homes">Mening uylarim</string>
+    <string name="paynet_card_desc">• 3540 Paynet karta</string>
+    <string name="paynet_card">Paynet karta</string>
+    <string name="verify_identity">Shaxsingizni tasdiqlang</string>
+    <string name="verify_identity_desc">Paynet kartasida ko\'proq pul sarflash va saqlash uchun</string>
+    <string name="remove_limits_desc">Shaxsingizni tasdiqlang va o\'tkazmalar cheklovlarini olib tashlang</string>
+    <string name="remaining_transfers">Identifikatsiyasiz bajarish mumkin o\'tkazmalar qoldi: %1$d / %2$d</string>
+    <string name="top_up">To\'ldirish</string>
+    <string name="transfer">O\'tkazish</string>
+    <string name="pay">To\'lash</string>
+    <string name="qr_cashout">QR Cashout</string>
+    <string name="qr_cashout_desc">Paynet agentida naqd pul yechish</string>
+    <string name="payment_history">To\'lovlar tarixi</string>
+    <string name="no_payments_yet">Hozircha to\'lovlar mavjud emas</string>
+    <string name="offer">Oferta</string>
+    <string name="terms_and_limits">Shartlar va cheklovlar</string>
+    <string name="settings">Sozlamalar</string>
+    <string name="main_card">Asosiy karta</string>
+
+    <string name="language_select">Tilni tanlang</string>
+    <string name="language_select_desc">profil sozlamalaridan o\'zgartirishingiz mumkin</string>
+
+    <!-- Auth / Components -->
+    <string name="enter_sms_code">SMSdagi kodni kiriting</string>
+    <string name="code_sent_to">%s raqamiga yubordik</string>
+    <string name="enter_phone_number">Raqamingizni kiriting</string>
+    <string name="to_become_client">Mijoz bo\'lish yoki kirish uchun</string>
+    <string name="continue_btn">Davom etish</string>
+    <string name="by_clicking_continue_i_agree">"Davom etish" tugmasini bosish orqali men </string>
+    <string name="terms_of_service">Xizmatlar ko\'rsatish haqidagi oferta shartlarini</string>
+    <string name="and_consent_to_data_processing"> qabul qilaman va shaxsiy malumotlarni qayta ishlashga rozilik bildiraman</string>
+    <string name="resend_code">Kodni qayta yuborish</string>
+    <string name="seconds_short">sek</string>
+
+    <string name="create_pin">PIN-kod yarating</string>
+    <string name="confirm_pin">PIN-kodni tasdiqlang</string>
+    <string name="enter_pin">PIN-kodni kiriting</string>
+    <string name="forgot_pin">Kodni unut-\ndingizmi?</string>
+    <string name="security_pin_desc">Ilova xavfsizligini ta\'minlash uchun</string>
+    <string name="error_pin_mismatch">PIN-kodlar mos kelmadi</string>
+    <string name="error_wrong_pin">PIN-kod noto\'g\'ri</string>
+
+    <!-- Add Card Screen -->
+    <string name="add_card_title">Kartani qo\'shish</string>
+    <string name="card_number_hint">Karta raqami</string>
+    <string name="expiry_date_hint">oo/yy</string>
+    <string name="card_name_hint">Karta nomi</string>
+    <string name="characters_limit">%1$d / %2$d belgilar</string>
+    <string name="card_scan_content_description">Kartani skanerlash</string>
+
+    <!-- Error Messages -->
+    <string name="error_unknown">Nomalum xatolik yuz berdi</string>
+    <string name="error_card_not_found">Karta topilmadi</string>
+    <string name="error_card_already_exists">Ushbu karta allaqachon qo\'shilgan</string>
+    <string name="error_invalid_card_number">Karta raqami noto\'g\'ri</string>
+    <string name="error_network">Internet bilan aloqa yo\'q</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="transfer_to_card_title">Kartaga o\'tkazish</string>
+    <string name="confirm_transfer">O\'tkazmani tasdiqlash</string>
+    <string name="you_are_transferring">Siz o\'tkazyapsiz</string>
+    <string name="commission">Komissiya</string>
+    <string name="will_be_debited">Kartadan yechib olinadi</string>
+    <string name="commission_percent">Komissiya %s%%</string>
+    <string name="add_greeting_card">Tabriknoma qo\'shing</string>
+    <string name="search_no_history">Qidiruv tarixi yo\'q</string>
+    <string name="select_card">Kartani tanlang</string>
+    <string name="sms_confirmation">SMS Tasdiqlash</string>
+    <string name="transfer_success">O\'tkazma muvaffaqiyatli yakunlandi</string>
+    <string name="transfer_success_desc">Siz %2$s ga %1$s so\'m muvaffaqiyatli o\'tkazdingiz</string>
+    <string name="back_to_transfers">O\'tkazmalarga qaytish</string>
+    <string name="transfer_sent">O\'tkazma yuborildi</string>
+    <string name="completed">Bajarildi</string>
+    <string name="add_to_template">Shablonga qo\'shish</string>
+    <string name="transfer_details">O\'tkazma tafsilotlari</string>
+    <string name="ready">Tayyor</string>
+    
+    <!-- History Screen -->
+    <string name="history_month_may">May</string>
+    <string name="history_filter_all">Hamma</string>
+    <string name="history_filter_expenses">Xarajatlar</string>
+    <string name="history_filter_topup">To\'ldirish</string>
+    <string name="history_may_expenses">May oyidagi xarajatlar</string>
+    <string name="history_card_monitoring_title">Karta monitoringi</string>
+    <string name="history_card_monitoring_desc">Xizmatni ulab, Uzcard va Humo barcha kartalardagi operatsiyalarni tarixda ko\'ring</string>
+    <string name="history_card_monitoring_price">4 999 so\'m / oy</string>
+    <string name="history_connect">Ulash</string>
+    <string name="history_today">Bugun</string>
+    <string name="history_outgoing_transfer">Chiquvchi o\'tkazma</string>
+    <string name="history_services">Xizmatlar</string>
+    <string name="history_mobile_operators">Mobile aloqa operatorlari</string>
+
+    <!-- Services Screen -->
+    <string name="services_title">Xizmatlar</string>
+    <string name="services_paynet_xolis">Paynet Xolis</string>
+    <string name="services_paynet_xolis_desc">O\'zini o\'zi band qilganlar va YaTTlar uchun xizmat</string>
+    <string name="services_gold_investment">Oltinga investitsiya</string>
+    <string name="services_gold_investment_desc">Oltin quymalar - ishonchli investitsiya</string>
+    <string name="services_crypto_wallet">Kripto-hamyon</string>
+    <string name="services_crypto_wallet_desc">CityPay orqali kripto-aktivlarni sotib oling va soting</string>
+    <string name="services_sahiy_market">Sahiy Market</string>
+    <string name="services_sahiy_market_desc">Xitoydan mahsulotlar qulay narxlarda</string>
+    <string name="services_labor_contracts">Mehnat shartnomalari</string>
+    <string name="services_labor_contracts_desc">Elektron shakldagi mehnat shartnomalari</string>
+    <string name="services_paynet_nasiya">Paynet Nasiya</string>
+    <string name="services_paynet_nasiya_desc">Hozir oling, keyinroq to\'lang</string>
+
+    <string name="transaction_transfer_in">Tushum</string>
+    <string name="transaction_transfer_out">Chiquvchi o\'tkazma</string>
+    <string name="transaction_payment">To\'lov</string>
+
+    <!-- Payment Screen -->
+    <string name="payment_title">To\'lov</string>
+    <string name="payment_tab_places">Joylarda</string>
+    <string name="payment_tab_templates">Shablon bo\'yicha</string>
+    <string name="payment_all_institutions">Barcha\nmuassasalar</string>
+    <string name="payment_types">To\'lov turlari</string>
+    <string name="payment_type_communication">Aloqa</string>
+    <string name="payment_type_internet_tv">Internet va TV</string>
+    <string name="payment_type_education">Ta\'lim</string>
+    <string name="payment_type_requisite">Rekvizit\nbo\'yicha to\'lov</string>
+    <string name="payment_type_communal">Kommunal\nto\'lovlar</string>
+    <string name="payment_type_state_services">Davlat xizmatlari\nva shtraflar</string>
+    <string name="payment_type_installment">Muddatli to\'lovlar</string>
+    <string name="payment_type_transport">Transport va taksi</string>
+    <string name="payment_type_loan">Kredit to\'lovlar</string>
+    <string name="payment_type_medicine">Tibbiyot</string>
+    <string name="payment_type_microcredit">Mikrokredit, lombardlar</string>
+    <string name="payment_type_other">Boshqa to\'lovlar</string>
+
+    <!-- Payment Flow Strings -->
+    <string name="payment_enter_account">Telefon raqami</string>
+    <string name="payment_continue">Davom etish</string>
+    <string name="payment_from">Qayerdan</string>
+    <string name="payment_you_pay">Siz to\'layapsiz</string>
+    <string name="payment_confirmation">To\'lovni tasdiqlash</string>
+    <string name="payment_amount">Summa</string>
+    <string name="payment_view_details">Ma\'lumotlarni ko\'rish</string>
+    <string name="payment_commission">Komissiya %s</string>
+    <string name="payment_pay">To\'lash</string>
+    <string name="payment_success">To\'lov muvaffaqiyatli amalga oshirildi!</string>
+    <string name="payment_back_to_home">Asosiy oynaga qaytish</string>
 </resources>

@@ -21,6 +21,7 @@ viewmodel = "2.8.7"
 voyager = "1.1.0-beta02"
 hiltNavigationCompose = "1.2.0"
 chucker = "4.0.0"
+leakcanary = "2.14"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,6 +57,7 @@ voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitio
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 chucker-library = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-library-no-op = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
+leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
