@@ -30,7 +30,7 @@ Faster build time
 Easier maintenance
 Scalable team workflow
 🎨 UI & Design System
-<p align="center"> <img src="https://img.shields.io/badge/Design-Glassmorphism-1f1f1f?style=flat-square"/> <img src="https://img.shields.io/badge/UX-Minimalist-blue?style=flat-square"/> <img src="https://img.shields.io/badge/Typography-Clean-lightgrey?style=flat-square"/> </p>
+<p align="center"> <img src="https://img.shields.io/badge/Design-Clean design-1f1f1f?style=flat-square"/> <img src="https://img.shields.io/badge/UX-Minimalist-blue?style=flat-square"/> <img src="https://img.shields.io/badge/Typography-Clean-lightgrey?style=flat-square"/> </p>
 🧿 Design Philosophy
 Clean and modern layout
 Dark-themed fintech aesthetics
