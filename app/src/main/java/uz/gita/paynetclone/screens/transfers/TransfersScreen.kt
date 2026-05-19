@@ -215,7 +215,10 @@ fun SearchStepContent(
                     }
                     BasicTextField(
                         value = state.searchText,
-                        onValueChange = { onEvent(TransfersContract.Intent.SearchChanged(it)) },
+                        onValueChange = { 
+                            val digitsOnly = it.filter { char -> char.isDigit() }.take(16)
+                            onEvent(TransfersContract.Intent.SearchChanged(digitsOnly)) 
+                        },
                         textStyle = TextStyle(
                             fontSize = 16.sp,
                             fontFamily = SatoshiMedium,
@@ -230,6 +233,7 @@ fun SearchStepContent(
                                 }
                             },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        visualTransformation = uz.gita.paynetclone.screens.home.CardNumberVisualTransformation(),
                         singleLine = true
                     )
                 }

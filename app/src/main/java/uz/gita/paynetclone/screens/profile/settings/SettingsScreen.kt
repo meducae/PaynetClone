@@ -41,8 +41,10 @@ class SettingsScreen : Screen {
 
         SettingsScreenContent(
             phoneNumber = state.user?.phone ?: "+998 91 234 19 48",
+            kycStatus = state.kycStatus,
             onBackClick = { navigator.back() },
-            onLogoutClick = viewModel::logout
+            onLogoutClick = viewModel::logout,
+            onVerifyClick = { navigator.openIdentification() }
         )
     }
 }
@@ -51,9 +53,15 @@ class SettingsScreen : Screen {
 @Composable
 fun SettingsScreenContent(
     phoneNumber: String,
+    kycStatus: uz.gita.paynetclone.entity.kyc.KycStatus?,
     onBackClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onVerifyClick: () -> Unit
 ) {
+    val isVerified = kycStatus?.status?.equals("approved", ignoreCase = true) == true
+    val isPending = kycStatus?.status?.equals("pending", ignoreCase = true) == true
+    val isRejected = kycStatus?.status?.equals("rejected", ignoreCase = true) == true
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -118,7 +126,10 @@ fun SettingsScreenContent(
             
             Row(
                 modifier = Modifier
-                    .background(Color(0xFFFEF3C7), RoundedCornerShape(16.dp))
+                    .background(
+                        if (isVerified) Color(0xFFDCFCE7) else Color(0xFFFEF3C7),
+                        RoundedCornerShape(16.dp)
+                    )
                     .padding(horizontal = 12.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -126,13 +137,13 @@ fun SettingsScreenContent(
                     painter = painterResource(R.drawable.shield),
                     contentDescription = null,
                     modifier = Modifier.size(14.dp),
-                    tint = Color(0xFFD97706)
+                    tint = if (isVerified) Color(0xFF15803D) else Color(0xFFD97706)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(R.string.partially_protected),
+                    text = if (isVerified) stringResource(R.string.kyc_fully_protected) else stringResource(R.string.partially_protected),
                     fontSize = 12.sp,
-                    color = Color(0xFFD97706),
+                    color = if (isVerified) Color(0xFF15803D) else Color(0xFFD97706),
                     fontFamily = SatoshiMedium
                 )
             }
@@ -143,20 +154,52 @@ fun SettingsScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                val kycCardTitle = when {
+                    isVerified -> stringResource(R.string.kyc_status_approved_title)
+                    isPending -> stringResource(R.string.kyc_status_pending_title)
+                    isRejected -> stringResource(R.string.kyc_status_rejected_title)
+                    else -> stringResource(R.string.kyc_status_not_started_title)
+                }
+
+                val kycCardDescription = when {
+                    isVerified -> stringResource(R.string.kyc_status_approved_desc)
+                    isPending -> stringResource(R.string.kyc_status_pending_desc)
+                    isRejected -> {
+                        val reason = kycStatus?.rejectionReason ?: stringResource(R.string.kyc_status_rejected_desc_default)
+                        stringResource(R.string.kyc_status_rejected_desc_placeholder, reason)
+                    }
+                    else -> stringResource(R.string.kyc_status_not_started_desc)
+                }
+
+                val kycCardIcon = if (isVerified) R.drawable.shield else R.drawable.info
+                val kycCardIconTint = when {
+                    isVerified -> Color(0xFF22C55E)
+                    isPending -> Color(0xFFD97706)
+                    isRejected -> Color(0xFFEF4444)
+                    else -> Color(0xFFD97706)
+                }
+
+                val kycButtonText = when {
+                    isVerified || isPending -> null
+                    isRejected -> stringResource(R.string.kyc_btn_retry)
+                    else -> stringResource(R.string.kyc_btn_verify)
+                }
+
                 KycCard(
                     modifier = Modifier.weight(1f),
-                    icon = R.drawable.info,
-                    iconTint = Color(0xFFD97706),
-                    title = "Shaxsingizni tasdiqlang",
-                    description = "Ilovadagi ayrim amallar uchun shaxsingizni tasdiqlashingiz kerak",
-                    buttonText = "Tasdiqlash"
+                    icon = kycCardIcon,
+                    iconTint = kycCardIconTint,
+                    title = kycCardTitle,
+                    description = kycCardDescription,
+                    buttonText = kycButtonText,
+                    onButtonClick = onVerifyClick
                 )
                 KycCard(
                     modifier = Modifier.weight(1f),
                     icon = R.drawable.shield,
                     iconTint = Color(0xFF22C55E),
-                    title = "Hech qanday shubhali ilova topilmadi",
-                    description = "Qurilmangizda shubhali ilovalar yo'q",
+                    title = stringResource(R.string.kyc_suspicious_apps_title),
+                    description = stringResource(R.string.kyc_suspicious_apps_desc),
                     buttonText = null
                 )
             }
@@ -235,7 +278,8 @@ fun KycCard(
     iconTint: Color,
     title: String,
     description: String,
-    buttonText: String? = null
+    buttonText: String? = null,
+    onButtonClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier.height(180.dp),
@@ -272,13 +316,14 @@ fun KycCard(
                     fontFamily = SatoshiMedium,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
-                    lineHeight = 12.sp
+                    lineHeight = 12.sp,
+                    maxLines = 3
                 )
             }
             
             if (buttonText != null) {
                 Button(
-                    onClick = { },
+                    onClick = onButtonClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(32.dp),

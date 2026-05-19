@@ -219,7 +219,23 @@
     <string name="ident_selfie_req_4">Kamera obyektivi toza</string>
     <string name="ident_take_selfie">Selfi oling</string>
     <string name="ident_look_straight">To\'g\'riga qarang</string>
-    <string name="ident_verified">Shaxs tasdiqlandi</string>
-    <string name="ident_verified_desc">Endi siz ilovadan to\'liq potentsialidan foydalanishingiz mumkin</string>
+    <string name="ident_verified">So\'rov yuborildi</string>
+    <string name="ident_verified_desc">Sizning arizangiz muvaffaqiyatli yuborildi. Mutaxassislar tomonidan tez orada tekshirib chiqiladi.</string>
     <string name="ident_good">Yaxshi</string>
+
+    <!-- KYC Settings Screen Statuses -->
+    <string name="kyc_fully_protected">To\'liq himoyalangan</string>
+    <string name="kyc_status_approved_title">Shaxsingiz tasdiqlangan</string>
+    <string name="kyc_status_approved_desc">Ilovadagi barcha amallardan to\'liq foydalanishingiz mumkin</string>
+    <string name="kyc_status_pending_title">Tekshirilmoqda</string>
+    <string name="kyc_status_pending_desc">Hujjatlaringiz tekshirilmoqda. Iltimos, biroz kuting</string>
+    <string name="kyc_status_rejected_title">Rad etildi</string>
+    <string name="kyc_status_rejected_desc_placeholder">Rad etildi: %s</string>
+    <string name="kyc_status_rejected_desc_default">Hujjatlar mos kelmadi</string>
+    <string name="kyc_status_not_started_title">Shaxsingizni tasdiqlang</string>
+    <string name="kyc_status_not_started_desc">Ilovadagi ayrim amallar uchun shaxsingizni tasdiqlashingiz kerak</string>
+    <string name="kyc_btn_verify">Tasdiqlash</string>
+    <string name="kyc_btn_retry">Qaytadan urinish</string>
+    <string name="kyc_suspicious_apps_title">Hech qanday shubhali ilova topilmadi</string>
+    <string name="kyc_suspicious_apps_desc">Qurilmangizda shubhali ilovalar yo\'q</string>
 </resources>
