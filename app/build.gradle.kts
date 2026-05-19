@@ -68,4 +68,10 @@ dependencies {
     implementation(libs.voyager.hilt)
     implementation(libs.voyager.transitions)
     implementation(project(":entity"))
+    val cameraxVersion = "1.3.4"
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
 }

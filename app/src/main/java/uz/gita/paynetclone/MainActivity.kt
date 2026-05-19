@@ -136,6 +136,10 @@ class MainActivity : ComponentActivity() {
             replaceAllOnce(uz.gita.paynetclone.screens.services.ServicesScreen())
         }
 
+        override fun openIdentification() {
+            pushOnce(uz.gita.paynetclone.screens.identification.IdentificationScreen())
+        }
+
         override fun back() {
             navigator?.pop()
         }

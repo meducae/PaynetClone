@@ -204,4 +204,22 @@
     <string name="payment_pay">To\'lash</string>
     <string name="payment_success">To\'lov muvaffaqiyatli amalga oshirildi!</string>
     <string name="payment_back_to_home">Asosiy oynaga qaytish</string>
+    <!-- Identification Flow -->
+    <string name="ident_title">Shaxsni tasdiqlash</string>
+    <string name="ident_uz_citizen">O\'zbekiston fuqarosi</string>
+    <string name="ident_foreign_citizen">Chet el fuqarosi</string>
+    <string name="ident_info_msg">Pasport (ID karta) yoki JShShIR raqami va tug\'ilgan sanani kiriting</string>
+    <string name="ident_doc_number">Hujjat raqami</string>
+    <string name="ident_dob">Tug\'ilgan kun</string>
+    <string name="ident_next">Keyingisi</string>
+    <string name="ident_selfie_title">Identifikatsiya qilish uchun selfi oling</string>
+    <string name="ident_selfie_req_1">Yuzning oval qismi ramkaga mos keladi</string>
+    <string name="ident_selfie_req_2">Yuz yaxshi yoritilgan</string>
+    <string name="ident_selfie_req_3">Orqa fon monoton</string>
+    <string name="ident_selfie_req_4">Kamera obyektivi toza</string>
+    <string name="ident_take_selfie">Selfi oling</string>
+    <string name="ident_look_straight">To\'g\'riga qarang</string>
+    <string name="ident_verified">Shaxs tasdiqlandi</string>
+    <string name="ident_verified_desc">Endi siz ilovadan to\'liq potentsialidan foydalanishingiz mumkin</string>
+    <string name="ident_good">Yaxshi</string>
 </resources>

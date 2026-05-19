@@ -1,5 +1,6 @@
 package uz.gita.paynetclone.screens.card_details
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -46,6 +48,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
 import kotlinx.coroutines.flow.collectLatest
 import uz.gita.paynetclone.R
+import uz.gita.paynetclone.components.PaynetCardItem
 import uz.gita.paynetclone.entity.card.Card
 import uz.gita.paynetclone.presenter.card_details.CardDetailsContract
 import uz.gita.paynetclone.presenter.card_details.CardDetailsViewModel
@@ -74,10 +77,11 @@ class CardDetailsScreen(private val cardId: String) : Screen {
                     is CardDetailsContract.SideEffect.ShowToast -> {
                         Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
                     }
+
                     CardDetailsContract.SideEffect.NavigateToPay -> {}
                     CardDetailsContract.SideEffect.NavigateToTopUp -> {}
                     CardDetailsContract.SideEffect.NavigateToTransfer -> {}
-                    CardDetailsContract.SideEffect.NavigateToVerify -> {}
+                    CardDetailsContract.SideEffect.NavigateToVerify -> navigator.openIdentification()
                 }
             }
         }
@@ -89,6 +93,7 @@ class CardDetailsScreen(private val cardId: String) : Screen {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CardDetailsContent(
     state: CardDetailsContract.State,
@@ -99,12 +104,13 @@ fun CardDetailsContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .safeDrawingPadding()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = 8.dp, vertical = 12.dp),
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.arrowback),
+                    painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
                     modifier = Modifier
                         .size(32.dp)
@@ -129,50 +135,23 @@ fun CardDetailsContent(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
         ) {
-            // Card Representation
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                shape = RoundedCornerShape(24.dp),
-                color = Color.Transparent,
-                tonalElevation = 0.dp
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.linearGradient(
-                                colors = listOf(Color(0xFF00964E), Color(0xFF00C853))
-                            )
-                        )
-                        .padding(horizontal = 20.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = state.card?.maskedNumber?.chunked(4)?.joinToString(" ") ?: "",
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontFamily = SatoshiBold,
-                            letterSpacing = 1.sp
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.repeat),
-                            contentDescription = "Copy",
-                            tint = Color.White.copy(alpha = 0.8f),
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable { onEvent(CardDetailsContract.Intent.OnCopyClicked) }
-                        )
-                    }
-                }
-            }
+            PaynetCardItem(
+                card = state.card ?: Card(
+                    id = "1",
+                    maskedNumber = "1234",
+                    holderName = "Nemo Nemo",
+                    expiry = "23/7",
+                    balance = 10000,
+                    currency = "UZ",
+                    isMain = true,
+                    isBlocked = false,
+                    type = "Paynet"
+                ), modifier = Modifier, { cardNumber ->
+                    onEvent(CardDetailsContract.Intent.OnCopyClicked)
+                })
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Verify Identity Section
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -190,7 +169,6 @@ fun CardDetailsContent(
                             .background(Color(0xFF00964E).copy(alpha = 0.1f)),
                         contentAlignment = Alignment.Center
                     ) {
-                        // Simulating the "PRO" badge/shield icon
                         Icon(
                             painter = painterResource(id = R.drawable.shield),
                             contentDescription = null,
@@ -199,7 +177,7 @@ fun CardDetailsContent(
                         )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
-                    Column {
+                    Column (){
                         Text(
                             text = stringResource(R.string.verify_identity),
                             fontFamily = SatoshiBold,
@@ -217,11 +195,12 @@ fun CardDetailsContent(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Limits Info Box (Light blue)
             Surface(
-                modifier = Modifier.fillMaxWidth().clickable { onEvent(CardDetailsContract.Intent.OnVerifyClicked) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onEvent(CardDetailsContract.Intent.OnVerifyClicked) },
                 shape = RoundedCornerShape(20.dp),
-                color = Color(0xFFF0F7FF), // Very light blue
+                color = Color(0xFFF0F7FF),
                 tonalElevation = 0.dp
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -243,7 +222,6 @@ fun CardDetailsContent(
                             tint = Color(0xFF1976D2),
                             modifier = Modifier
                                 .size(14.dp)
-                                .graphicsLayer(rotationZ = 180f)
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
