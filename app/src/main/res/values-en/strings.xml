@@ -1,0 +1,207 @@
+<resources>
+    <string name="app_name">Paynet(Clone)</string>
+    <string name="profile">Profile</string>
+    <string name="my_data">My Data</string>
+    <string name="personal_cabinet">Personal Cabinet</string>
+    <string name="support">Support</string>
+    <string name="chat_assistant">Chat Assistant</string>
+    <string name="call">Call</string>
+    <string name="write_email">Write Email</string>
+    <string name="useful_info">Useful Information</string>
+    <string name="about_paynet">About Paynet</string>
+    <string name="paynet_branches">Paynet Branches</string>
+    <string name="reference">Reference</string>
+    <string name="app_settings">App Settings</string>
+    <string name="rate_app">Rate App</string>
+    <string name="logout">Log Out</string>
+    <string name="back">Back</string>
+    <string name="go">Go</string>
+    <string name="exit">Exit</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="language_en">English</string>
+    <string name="language_uz">O\'zbekcha</string>
+    <string name="language_ru">Русский</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+
+    <!-- Home Screen -->
+    <string name="my_money">My money</string>
+    <string name="zero_som">0 sum</string>
+    <string name="transfer_to_card">Transfer to card</string>
+    <string name="partially_protected">Partially protected</string>
+    <string name="nav_main">Main</string>
+    <string name="nav_transfers">Transfers</string>
+    <string name="nav_payment">Payment</string>
+    <string name="nav_history">History</string>
+    <string name="nav_services">Services</string>
+    <string name="promo_visa_direct">Visa Direct</string>
+    <string name="promo_crypto">Crypto assets</string>
+    <string name="promo_kindergarten">Kindergarten</string>
+    <string name="promo_goodness">Goodness</string>
+    <string name="stat_cashback">Cashback</string>
+    <string name="stat_today_zero">Today: 0 sum</string>
+    <string name="stat_coins">Coins</string>
+    <string name="stat_exchange">Exchange ></string>
+    <string name="my_cards">My cards</string>
+    <string name="my_cards_title">My cards</string>
+    <string name="add_card_btn">Add card</string>
+    <string name="paynet_card_name">Paynet card</string>
+    <string name="copy_to_clipboard">Copied to clipboard</string>
+    <string name="add_plus">+ Add</string>
+    <string name="my_homes">My homes</string>
+    <string name="paynet_card_desc">• 3540 Paynet card</string>
+    <string name="paynet_card">Paynet card</string>
+    <string name="verify_identity">Verify your identity</string>
+    <string name="verify_identity_desc">To spend and save more money on Paynet card</string>
+    <string name="remove_limits_desc">Verify your identity and remove transfer limits</string>
+    <string name="remaining_transfers">Transfers available without identification: %1$d / %2$d</string>
+    <string name="top_up">Top up</string>
+    <string name="transfer">Transfer</string>
+    <string name="pay">Pay</string>
+    <string name="qr_cashout">QR Cashout</string>
+    <string name="qr_cashout_desc">Cash withdrawal at Paynet agent</string>
+    <string name="payment_history">Payment history</string>
+    <string name="no_payments_yet">No payments yet</string>
+    <string name="offer">Offer</string>
+    <string name="terms_and_limits">Terms and limits</string>
+    <string name="settings">Settings</string>
+    <string name="main_card">Main card</string>
+
+    <string name="language_select">Select Language</string>
+    <string name="language_select_desc">you can change in profile settings</string>
+
+    <!-- Auth / Components -->
+    <string name="enter_sms_code">Enter SMS code</string>
+    <string name="code_sent_to">Sent to %s</string>
+    <string name="enter_phone_number">Enter your number</string>
+    <string name="to_become_client">To become a client or log in</string>
+    <string name="continue_btn">Continue</string>
+    <string name="by_clicking_continue_i_agree">By clicking "Continue", I </string>
+    <string name="terms_of_service">accept the terms of service</string>
+    <string name="and_consent_to_data_processing"> and consent to personal data processing</string>
+    <string name="resend_code">Resend code</string>
+    <string name="seconds_short">sec</string>
+
+    <!-- PIN Screen -->
+    <string name="create_pin">Create PIN</string>
+    <string name="confirm_pin">Confirm PIN</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="forgot_pin">Forgot\nPIN?</string>
+    <string name="security_pin_desc">To ensure application security</string>
+    <string name="error_pin_mismatch">PIN codes do not match</string>
+    <string name="error_wrong_pin">Wrong PIN code</string>
+    <!-- Add Card Screen -->
+    <string name="add_card_title">Add card</string>
+    <string name="card_number_hint">Card number</string>
+    <string name="expiry_date_hint">mm/yy</string>
+    <string name="card_name_hint">Card name</string>
+    <string name="characters_limit">%1$d / %2$d characters</string>
+    <string name="card_scan_content_description">Scan card</string>
+    <string name="transfer_to_card_title">Transfer to Card</string>
+    <string name="confirm_transfer">Confirm Transfer</string>
+    <string name="you_are_transferring">You are transferring</string>
+    <string name="commission">Commission</string>
+    <string name="will_be_debited">Will be debited from card</string>
+    <string name="commission_percent">Commission %s%%</string>
+    <string name="add_greeting_card">Add a greeting card</string>
+    <string name="search_no_history">No search history</string>
+    <string name="select_card">Select Card</string>
+    <string name="sms_confirmation">SMS Confirmation</string>
+    <string name="transfer_success">Transfer successful</string>
+    <string name="transfer_success_desc">You successfully transferred %1$s sum to %2$s</string>
+    <string name="back_to_transfers">Back to transfers</string>
+    <string name="transfer_sent">Transfer sent</string>
+    <string name="completed">Completed</string>
+    <string name="add_to_template">Add to template</string>
+    <string name="transfer_details">Transfer details</string>
+    <string name="ready">Ready</string>
+    <string name="som">sum</string>
+
+    <!-- History Screen -->
+    <string name="history_month_may">May</string>
+    <string name="history_filter_all">All</string>
+    <string name="history_filter_expenses">Expenses</string>
+    <string name="history_filter_topup">Top-up</string>
+    <string name="history_may_expenses">Expenses in May</string>
+    <string name="history_card_monitoring_title">Card monitoring</string>
+    <string name="history_card_monitoring_desc">Connect the service and view transactions for all Uzcard and Humo cards in history</string>
+    <string name="history_card_monitoring_price">4 999 sum / month</string>
+    <string name="history_connect">Connect</string>
+    <string name="history_today">Today</string>
+    <string name="history_outgoing_transfer">Outgoing transfer</string>
+    <string name="history_services">Services</string>
+    <string name="history_mobile_operators">Mobile operators</string>
+    <string name="transaction_transfer_in">Incoming transfer</string>
+    <string name="transaction_transfer_out">Outgoing transfer</string>
+    <string name="transaction_payment">Payment</string>
+
+    <!-- Services Screen -->
+    <string name="services_title">Services</string>
+    <string name="services_paynet_xolis">Paynet Xolis</string>
+    <string name="services_paynet_xolis_desc">Service for self-employed and individual entrepreneurs</string>
+    <string name="services_gold_investment">Gold Investment</string>
+    <string name="services_gold_investment_desc">Gold bars - a reliable investment</string>
+    <string name="services_crypto_wallet">Crypto-wallet</string>
+    <string name="services_crypto_wallet_desc">Buy and sell crypto-assets via CityPay</string>
+    <string name="services_sahiy_market">Sahiy Market</string>
+    <string name="services_sahiy_market_desc">Products from China at affordable prices</string>
+    <string name="services_labor_contracts">Labor contracts</string>
+    <string name="services_labor_contracts_desc">Electronic labor contracts</string>
+    <string name="services_paynet_nasiya">Paynet Nasiya</string>
+    <string name="services_paynet_nasiya_desc">Get now, pay later</string>
+
+    <!-- Payment Screen -->
+    <string name="payment_title">Payment</string>
+    <string name="payment_tab_places">In places</string>
+    <string name="payment_tab_templates">By template</string>
+    <string name="payment_all_institutions">All institutions</string>
+    <string name="payment_types">Payment types</string>
+    <string name="payment_type_communication">Communication</string>
+    <string name="payment_type_internet_tv">Internet and TV</string>
+    <string name="payment_type_education">Education</string>
+    <string name="payment_type_requisite">Payment by details</string>
+    <string name="payment_type_communal">Communal payments</string>
+    <string name="payment_type_state_services">State services and fines</string>
+    <string name="payment_type_installment">Installment payments</string>
+    <string name="payment_type_transport">Transport and taxi</string>
+    <string name="payment_type_loan">Loan payments</string>
+    <string name="payment_type_medicine">Medicine</string>
+    <string name="payment_type_microcredit">Microcredit, pawnshops</string>
+    <string name="payment_type_other">Other payments</string>
+    <!-- Identification Flow -->
+    <string name="ident_title">Identity verification</string>
+    <string name="ident_uz_citizen">Citizen of Uzbekistan</string>
+    <string name="ident_foreign_citizen">Foreign citizen</string>
+    <string name="ident_info_msg">Enter passport (ID card) or PINFL number and date of birth</string>
+    <string name="ident_doc_number">Document number</string>
+    <string name="ident_dob">Date of birth</string>
+    <string name="ident_next">Next</string>
+    <string name="ident_selfie_title">Take a selfie for identification</string>
+    <string name="ident_selfie_req_1">The oval of the face fits the frame</string>
+    <string name="ident_selfie_req_2">Face is well lit</string>
+    <string name="ident_selfie_req_3">Background is monotonous</string>
+    <string name="ident_selfie_req_4">Camera lens is clean</string>
+    <string name="ident_take_selfie">Take a selfie</string>
+    <string name="ident_look_straight">Look straight</string>
+    <string name="ident_verified">Request sent</string>
+    <string name="ident_verified_desc">Your application has been successfully submitted. It will be reviewed by specialists shortly.</string>
+    <string name="ident_good">Good</string>
+
+    <!-- KYC Settings Screen Statuses -->
+    <string name="kyc_fully_protected">Fully protected</string>
+    <string name="kyc_status_approved_title">Identity verified</string>
+    <string name="kyc_status_approved_desc">You can fully use all features of the application</string>
+    <string name="kyc_status_pending_title">Verification in progress</string>
+    <string name="kyc_status_pending_desc">Your documents are being checked. Please wait</string>
+    <string name="kyc_status_rejected_title">Rejected</string>
+    <string name="kyc_status_rejected_desc_placeholder">Rejected: %s</string>
+    <string name="kyc_status_rejected_desc_default">Documents do not match</string>
+    <string name="kyc_status_not_started_title">Verify your identity</string>
+    <string name="kyc_status_not_started_desc">For some actions in the app, you need to verify your identity</string>
+    <string name="kyc_btn_verify">Verify</string>
+    <string name="kyc_btn_retry">Try again</string>
+    <string name="kyc_suspicious_apps_title">No suspicious apps found</string>
+    <string name="kyc_suspicious_apps_desc">No suspicious applications on your device</string>
+</resources>
