@@ -67,7 +67,9 @@ dependencies {
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.hilt)
     implementation(libs.voyager.transitions)
+    implementation(libs.voyager.tabNavigator)
     implementation(project(":entity"))
+    implementation(libs.androidx.biometric)
     val cameraxVersion = "1.3.4"
     implementation("androidx.camera:camera-core:$cameraxVersion")
     implementation("androidx.camera:camera-camera2:$cameraxVersion")

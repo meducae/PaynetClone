@@ -58,7 +58,7 @@ fun MyCardsScreenContent(
     val copiedMessage = stringResource(R.string.copy_to_clipboard)
 
     Scaffold(
-        modifier = Modifier.fillMaxSize().systemBarsPadding(),
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {

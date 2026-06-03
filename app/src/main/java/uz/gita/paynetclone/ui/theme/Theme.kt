@@ -13,6 +13,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+import android.app.Activity
 import uz.gita.paynetclone.core.utils.ThemeMode
 
 @Immutable
@@ -92,6 +96,22 @@ fun PaynetCloneTheme(
     }
 
     val cardColors = if (isDark) DarkCardColors else LightCardColors
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            var context = view.context
+            while (context is android.content.ContextWrapper) {
+                if (context is Activity) break
+                context = context.baseContext
+            }
+            if (context is Activity) {
+                val window = context.window
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
+                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !isDark
+            }
+        }
+    }
 
     CompositionLocalProvider(
         LocalCardColors provides cardColors

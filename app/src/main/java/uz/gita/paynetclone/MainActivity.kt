@@ -1,7 +1,7 @@
 package uz.gita.paynetclone
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
@@ -11,31 +11,30 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import dagger.hilt.android.AndroidEntryPoint
-import uz.gita.paynetclone.core.utils.PrefsManager
-import uz.gita.paynetclone.screens.auth.LanguageSelectorScreen
-import uz.gita.paynetclone.screens.auth.PhoneRegistrationScreen
-import uz.gita.paynetclone.common.AppEnvironment
-
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
+import uz.gita.paynetclone.common.AppEnvironment
 import uz.gita.paynetclone.core.common.AuthEvent
 import uz.gita.paynetclone.core.common.AuthEventBus
 import uz.gita.paynetclone.core.common.TokenManager
-import uz.gita.paynetclone.screens.auth.PhoneCodeVerificationScreen
-import uz.gita.paynetclone.screens.auth.PinScreen
-import uz.gita.paynetclone.screens.home.HomeScreen
-import uz.gita.paynetclone.screens.home.AddCardScreen
+import uz.gita.paynetclone.core.utils.PrefsManager
+import uz.gita.paynetclone.di.NavigationModule
 import uz.gita.paynetclone.presenter.navigation.AppNavigator
 import uz.gita.paynetclone.presenter.navigation.LocalAppNavigator
-import uz.gita.paynetclone.screens.profile.settings.SettingsScreen
-import uz.gita.paynetclone.di.NavigationModule
+import uz.gita.paynetclone.screens.auth.LanguageSelectorScreen
+import uz.gita.paynetclone.screens.auth.PhoneCodeVerificationScreen
+import uz.gita.paynetclone.screens.auth.PhoneRegistrationScreen
+import uz.gita.paynetclone.screens.auth.PinScreen
 import uz.gita.paynetclone.screens.card_details.CardDetailsScreen
+import uz.gita.paynetclone.screens.home.AddCardScreen
 import uz.gita.paynetclone.screens.home.MyCardsScreen
+import uz.gita.paynetclone.screens.main.MainScreen
+import uz.gita.paynetclone.screens.profile.settings.SettingsScreen
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var tokenManager: TokenManager
@@ -101,12 +100,9 @@ class MainActivity : ComponentActivity() {
         }
 
         override fun openHome() {
-            replaceAllOnce(HomeScreen())
+            replaceAllOnce(MainScreen())
         }
 
-        override fun openTransfers() {
-            replaceAllOnce(uz.gita.paynetclone.screens.transfers.TransfersScreen())
-        }
 
         override fun openSettings() {
             pushOnce(SettingsScreen())
@@ -124,17 +120,6 @@ class MainActivity : ComponentActivity() {
             pushOnce(CardDetailsScreen(cardId))
         }
 
-        override fun openHistory() {
-            replaceAllOnce(uz.gita.paynetclone.screens.history.HistoryScreen())
-        }
-
-        override fun openPayment() {
-            replaceAllOnce(uz.gita.paynetclone.screens.payment.PaymentScreen())
-        }
-
-        override fun openServices() {
-            replaceAllOnce(uz.gita.paynetclone.screens.services.ServicesScreen())
-        }
 
         override fun openIdentification() {
             pushOnce(uz.gita.paynetclone.screens.identification.IdentificationScreen())

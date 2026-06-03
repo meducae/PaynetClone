@@ -238,4 +238,15 @@
     <string name="kyc_btn_retry">Qaytadan urinish</string>
     <string name="kyc_suspicious_apps_title">Hech qanday shubhali ilova topilmadi</string>
     <string name="kyc_suspicious_apps_desc">Qurilmangizda shubhali ilovalar yo\'q</string>
+    
+    <!-- Delete Card Strings -->
+    <string name="delete_card">Kartani o\'chirish</string>
+    <string name="delete_card_confirm_title">Kartani o\'chirishni tasdiqlaysizmi?</string>
+    <string name="delete_card_confirm_desc">Ushbu karta ilovadan butunlay o\'chiriladi. Bu amalni ortga qaytarib bo\'lmaydi.</string>
+    <string name="delete">O\'chirish</string>
+
+    <!-- Biometric Strings -->
+    <string name="biometric_title">Biometrik identifikatsiya</string>
+    <string name="biometric_subtitle">Ilovaga tezroq va xavfsizroq kirish uchun biometrik ma\'lumotlardan foydalaning</string>
 </resources>
+

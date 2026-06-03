@@ -34,11 +34,13 @@ sealed interface PinIntent {
     data object OnDeleteClicked : PinIntent
     data object OnForgotClicked : PinIntent
     data object OnBiometricClicked : PinIntent
+    data object OnBiometricSuccess : PinIntent
 }
 
 sealed interface PinSideEffect {
     data object NavigateToHome : PinSideEffect
     data class ShowError(val message: UiText) : PinSideEffect
+    data object ShowBiometricPrompt : PinSideEffect
 }
 
 @HiltViewModel
@@ -62,7 +64,18 @@ class PinViewModel @Inject constructor(
             is PinIntent.OnNumberEntered -> handleNumberEntered(intent.number)
             is PinIntent.OnDeleteClicked -> handleDelete()
             is PinIntent.OnForgotClicked -> { /* Handle forgot PIN */ }
-            is PinIntent.OnBiometricClicked -> { /* Handle Biometric */ }
+            is PinIntent.OnBiometricClicked -> {
+                if (_state.value.mode == PinMode.ENTER) {
+                    viewModelScope.launch {
+                        _sideEffect.emit(PinSideEffect.ShowBiometricPrompt)
+                    }
+                }
+            }
+            is PinIntent.OnBiometricSuccess -> {
+                viewModelScope.launch {
+                    _sideEffect.emit(PinSideEffect.NavigateToHome)
+                }
+            }
         }
     }
 

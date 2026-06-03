@@ -1,6 +1,7 @@
 package uz.gita.paynetclone.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -24,7 +25,8 @@ fun BalanceSection(
     balance: Long,
     isVisible: Boolean,
     isLoading: Boolean = false,
-    onToggleVisibility: () -> Unit
+    onToggleVisibility: () -> Unit,
+    onTransferClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -75,7 +77,9 @@ fun BalanceSection(
             }
             Spacer(Modifier.height(16.dp))
             Surface(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onTransferClicked() },
                 color = MaterialTheme.colorScheme.background,
                 shape = RoundedCornerShape(20.dp),
                 tonalElevation = 1.dp

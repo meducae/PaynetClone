@@ -26,8 +26,10 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.compose.ui.res.painterResource
 import uz.gita.paynetclone.R
 import uz.gita.paynetclone.presenter.paymentflow.PaymentAmountViewModel
+
 
 data class PaymentAmountScreen(
     val providerId: String,
@@ -53,12 +55,17 @@ data class PaymentAmountScreen(
                     title = { },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(
+                                painter = painterResource(id = R.drawable.back),
+                                contentDescription = "Back",
+                                modifier = Modifier.size(24.dp)
+                            )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.background,
-                        titleContentColor = MaterialTheme.colorScheme.onBackground
+                        titleContentColor = MaterialTheme.colorScheme.onBackground,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
             },
@@ -73,21 +80,21 @@ data class PaymentAmountScreen(
                 // Provider Header
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
-                        modifier = Modifier.size(40.dp).clip(CircleShape).background(Color.LightGray),
+                        modifier = Modifier.size(40.dp).clip(CircleShape).background(MaterialTheme.colorScheme.surfaceVariant),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(providerName.take(1).uppercase(), fontWeight = FontWeight.Bold, color = Color.White)
+                        Text(providerName.take(1).uppercase(), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
-                        Text(providerName, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        Text(account, fontSize = 16.sp, color = Color.Gray)
+                        Text(providerName, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                        Text(account, fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
                     }
                 }
                 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Text(stringResource(R.string.payment_from), fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
+                Text(stringResource(R.string.payment_from), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.padding(bottom = 8.dp))
                 if (selectedCard != null) {
                     Row(
                         modifier = Modifier
@@ -100,17 +107,17 @@ data class PaymentAmountScreen(
                         Box(modifier = Modifier.size(40.dp).clip(RoundedCornerShape(8.dp)).background(Color(0xFF00796B)))
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
-                            Text("${selectedCard?.type} • ${selectedCard?.maskedNumber?.takeLast(4)}", fontWeight = FontWeight.Medium)
-                            Text("${selectedCard?.balance} so'm", color = Color.Gray, fontSize = 14.sp)
+                            Text("${selectedCard?.type} • ${selectedCard?.maskedNumber?.takeLast(4)}", fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
+                            Text("${selectedCard?.balance} so'm", color = MaterialTheme.colorScheme.secondary, fontSize = 14.sp)
                         }
                     }
                 } else {
-                    Text("No cards available", color = Color.Red)
+                    Text("No cards available", color = MaterialTheme.colorScheme.error)
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Text(stringResource(R.string.payment_you_pay), fontSize = 14.sp, color = Color.Gray, modifier = Modifier.padding(bottom = 8.dp))
+                Text(stringResource(R.string.payment_you_pay), fontSize = 14.sp, color = MaterialTheme.colorScheme.secondary, modifier = Modifier.padding(bottom = 8.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -122,7 +129,7 @@ data class PaymentAmountScreen(
                         text = if (amount.isEmpty()) "500 - 1 500 000 so'm" else "$amount so'm",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Medium,
-                        color = if (amount.isEmpty()) Color.Gray else MaterialTheme.colorScheme.onBackground
+                        color = if (amount.isEmpty()) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground
                     )
                 }
 
@@ -137,7 +144,7 @@ data class PaymentAmountScreen(
                                 .clickable { amount = quickAmount }
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
                         ) {
-                            Text("$quickAmount so'm", fontSize = 14.sp)
+                            Text("$quickAmount so'm", fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground)
                         }
                     }
                 }
@@ -157,8 +164,8 @@ data class PaymentAmountScreen(
                         .padding(bottom = 16.dp),
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (amount.isNotBlank() && selectedCard != null) Color(0xFF10B981) else Color(0xFFE5E7EB),
-                        contentColor = if (amount.isNotBlank() && selectedCard != null) Color.White else Color.Gray
+                        containerColor = if (amount.isNotBlank() && selectedCard != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = if (amount.isNotBlank() && selectedCard != null) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     enabled = amount.isNotBlank() && selectedCard != null
                 ) {
@@ -216,7 +223,7 @@ fun CustomNumpad(onNumberClick: (Int) -> Unit, onDeleteClick: () -> Unit) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(num, fontSize = 24.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
                         if (letters.isNotEmpty()) {
-                            Text(letters, fontSize = 10.sp, color = Color.Gray)
+                            Text(letters, fontSize = 10.sp, color = MaterialTheme.colorScheme.secondary)
                         }
                     }
                 }

@@ -23,8 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.remember
+import uz.gita.paynetclone.R
 import cafe.adriel.voyager.hilt.getViewModel
 import kotlinx.coroutines.flow.collectLatest
 import uz.gita.paynetclone.components.BalanceSection
@@ -37,9 +41,17 @@ import uz.gita.paynetclone.components.StatsGridSection
 import uz.gita.paynetclone.presenter.home.HomeContract
 import uz.gita.paynetclone.presenter.home.HomeViewModel
 import uz.gita.paynetclone.presenter.navigation.LocalAppNavigator
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import uz.gita.paynetclone.screens.transfers.TransfersTab
 
-class HomeScreen : Screen {
-    override val key: ScreenKey = "home.main"
+object HomeTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val title = stringResource(R.string.nav_main)
+            val icon = painterResource(R.drawable.home_4_fill)
+            return remember { TabOptions(index = 0u, title = title, icon = icon) }
+        }
 
     @Composable
     override fun Content() {
@@ -47,6 +59,7 @@ class HomeScreen : Screen {
         val state by viewModel.state.collectAsState()
 
         val navigator = LocalAppNavigator.current
+        val tabNavigator = LocalTabNavigator.current
 
         LaunchedEffect(viewModel) {
             viewModel.sideEffect.collectLatest { sideEffect ->
@@ -65,13 +78,18 @@ class HomeScreen : Screen {
                     HomeContract.SideEffect.NavigateToMyCards -> {
                         navigator.openMyCards()
                     }
+
+                    HomeContract.SideEffect.NavigateToTransfers -> {
+                        tabNavigator.current = TransfersTab
+                    }
                 }
             }
         }
 
         HomeScreenContent(
             state = state,
-            onEvent = viewModel::onEvent
+            onEvent = viewModel::onEvent,
+            onTransferClicked = { viewModel.onEvent(HomeContract.Intent.OnTransferClicked) }
         )
     }
 }
@@ -80,11 +98,11 @@ class HomeScreen : Screen {
 @Composable
 fun HomeScreenContent(
     state: HomeContract.State,
-    onEvent: (HomeContract.Intent) -> Unit
+    onEvent: (HomeContract.Intent) -> Unit,
+    onTransferClicked: () -> Unit
 ) {
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { PaynetBottomNavigation(selectedIndex = 0) }
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         PullToRefreshBox(
             isRefreshing = state.isLoading,
@@ -113,6 +131,7 @@ fun HomeScreenContent(
                 ) {
                     PaynetTopHeader(
                         phoneNumber = state.user?.phone,
+                        isKycVerified = state.user?.isKycVerified,
                         onProfileClicked = { onEvent(HomeContract.Intent.OnSettingsClicked) },
                         onQrClicked = { },
                         onChatClicked = { onEvent(HomeContract.Intent.OnChatClicked) }
@@ -121,7 +140,8 @@ fun HomeScreenContent(
                         balance = state.cards.sumOf { it.balance },
                         isVisible = state.isBalanceVisible,
                         isLoading = state.isLoading,
-                        onToggleVisibility = { onEvent(HomeContract.Intent.ToggleBalanceVisibility) }
+                        onToggleVisibility = { onEvent(HomeContract.Intent.ToggleBalanceVisibility) },
+                        onTransferClicked = onTransferClicked
                     )
                 }
                 PromotionCarousel()
@@ -150,6 +170,7 @@ fun HomeScreenContentPreview() {
         state = HomeContract.State(
             isBalanceVisible = true
         ),
-        onEvent = {}
+        onEvent = {},
+        onTransferClicked = {}
     )
 }

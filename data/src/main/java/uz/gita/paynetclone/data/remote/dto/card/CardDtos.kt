@@ -32,3 +32,9 @@ data class CardErrorDto(
     val code: String,
     val message: String
 )
+
+data class DetachCardResponse(
+    val success: Boolean,
+    val error: CardErrorDto?
+)
+

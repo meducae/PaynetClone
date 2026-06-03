@@ -122,6 +122,7 @@ fun CardsListSection(
                     if (cards.isEmpty()) {
                         CardItem(
                             balance = 0,
+                            currency = "UZS",
                             desc = stringResource(R.string.paynet_card_desc),
                             onClicked = onClickCards
                         )
@@ -129,6 +130,7 @@ fun CardsListSection(
                         cards.forEachIndexed { index, card ->
                             CardItem(
                                 balance = card.balance,
+                                currency = card.currency,
                                 desc = "• ${card.maskedNumber.takeLast(4)} ${card.type}",
                                 onClicked = onClickCards
                             )
@@ -150,6 +152,7 @@ fun CardsListSection(
 @Composable
 private fun CardItem(
     balance: Long,
+    currency: String,
     desc: String,
     onClicked: () -> Unit
 ) {
@@ -176,9 +179,14 @@ private fun CardItem(
 
         Spacer(modifier = Modifier.width(12.dp))
 
+        val currencyText = when (currency.uppercase(Locale.ROOT)) {
+            "UZS", "UZ" -> stringResource(R.string.som)
+            else -> currency
+        }
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "${formatBalance(balance)} ${stringResource(R.string.som)}",
+                text = "${formatBalance(balance)} $currencyText",
                 fontFamily = SatoshiBold,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurface

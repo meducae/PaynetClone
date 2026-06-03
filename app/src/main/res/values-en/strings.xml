@@ -204,4 +204,15 @@
     <string name="kyc_btn_retry">Try again</string>
     <string name="kyc_suspicious_apps_title">No suspicious apps found</string>
     <string name="kyc_suspicious_apps_desc">No suspicious applications on your device</string>
+
+    <!-- Delete Card Strings -->
+    <string name="delete_card">Delete card</string>
+    <string name="delete_card_confirm_title">Do you confirm deleting the card?</string>
+    <string name="delete_card_confirm_desc">This card will be completely deleted from the application. This action cannot be undone.</string>
+    <string name="delete">Delete</string>
+
+    <!-- Biometric Strings -->
+    <string name="biometric_title">Biometric Authentication</string>
+    <string name="biometric_subtitle">Use your biometric credential to unlock the app quickly and securely</string>
+    <string name="cancel">Cancel</string>
 </resources>

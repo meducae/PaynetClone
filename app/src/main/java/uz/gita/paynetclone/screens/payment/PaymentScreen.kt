@@ -35,8 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
+import androidx.compose.runtime.remember
 import cafe.adriel.voyager.hilt.getViewModel
 import uz.gita.paynetclone.R
 import uz.gita.paynetclone.components.PaynetBottomNavigation
@@ -44,10 +45,18 @@ import uz.gita.paynetclone.presenter.payment.PaymentContract
 import uz.gita.paynetclone.presenter.payment.PaymentViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import uz.gita.paynetclone.components.TabItem
 import uz.gita.paynetclone.screens.payment.flow.PaymentAccountScreen
+import uz.gita.paynetclone.screens.payment.flow.PaymentCategoryProvidersScreen
 
-class PaymentScreen : Screen {
-    override val key: ScreenKey = "payment.main"
+object PaymentTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val title = stringResource(R.string.nav_payment)
+            val icon = painterResource(R.drawable.wallet_3_line)
+            return remember { TabOptions(index = 2u, title = title, icon = icon) }
+        }
 
     @Composable
     override fun Content() {
@@ -65,11 +74,11 @@ fun PaymentScreenContent(
     uiState: PaymentContract.UiState,
     onEvent: (PaymentContract.Intent) -> Unit
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+    val tabNavigator = LocalNavigator.currentOrThrow
+    val navigator = tabNavigator.parent ?: tabNavigator
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { PaynetBottomNavigation(selectedIndex = 2) }
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -90,7 +99,7 @@ fun PaymentScreenContent(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Row {
-                    IconButton(onClick = { /* Search */ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = "Search",
@@ -147,7 +156,7 @@ fun PaymentScreenContent(
                         uiState = uiState,
                         onEvent = onEvent,
                         onCategoryClick = { categoryId, categoryName ->
-                            navigator.push(uz.gita.paynetclone.screens.payment.flow.PaymentCategoryProvidersScreen(categoryId, categoryName))
+                            navigator.push(PaymentCategoryProvidersScreen(categoryId, categoryName))
                         },
                         onProviderClick = { provider ->
                             navigator.push(PaymentAccountScreen(provider.id, provider.name))
@@ -163,29 +172,6 @@ fun PaymentScreenContent(
     }
 }
 
-@Composable
-fun TabItem(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxHeight()
-            .clip(RoundedCornerShape(8.dp))
-            .background(if (isSelected) Color(0xFF10B981) else Color.Transparent)
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
 
 
 @Composable
@@ -242,21 +228,14 @@ fun PlacesContent(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
-                        tint = Color(0xFF10B981),
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(18.dp)
                     )
                 }
             }
         }
 
-        uiState.providers.take(10).forEach { provider ->
-            PlaceCard(
-                title = provider.name,
-                distance = provider.category,
-                logoColor = Color(0xFFE5E7EB),
-                onClick = { onProviderClick(provider) }
-            )
-        }
+
     }
 
     Spacer(modifier = Modifier.height(24.dp))

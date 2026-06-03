@@ -8,7 +8,8 @@ interface CardDetailsContract {
         val isLoading: Boolean = false,
         val isMainCard: Boolean = false,
         val remainingTransfers: Int = 1,
-        val maxTransfers: Int = 1
+        val maxTransfers: Int = 1,
+        val isKycVerified: Boolean = false
     )
 
     sealed interface Intent {
@@ -23,6 +24,7 @@ interface CardDetailsContract {
         object OnTermsClicked : Intent
         data class OnMainCardChanged(val isMain: Boolean) : Intent
         object OnVerifyClicked : Intent
+        object OnDeleteCardClicked : Intent
     }
 
     sealed interface SideEffect {

@@ -75,6 +75,11 @@ class HomeViewModel @Inject constructor(
                     _sideEffect.emit(HomeContract.SideEffect.NavigateToMyCards)
                 }
             }
+            HomeContract.Intent.OnTransferClicked -> {
+                viewModelScope.launch {
+                    _sideEffect.emit(HomeContract.SideEffect.NavigateToTransfers)
+                }
+            }
             HomeContract.Intent.OnChatClicked -> {
                 viewModelScope.launch {
                     _sideEffect.emit(HomeContract.SideEffect.NavigateToChat)

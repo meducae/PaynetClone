@@ -22,8 +22,10 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.compose.ui.res.painterResource
 import uz.gita.paynetclone.R
 import uz.gita.paynetclone.presenter.paymentflow.PaymentConfirmViewModel
+import uz.gita.paynetclone.ui.theme.SatoshiBold
 
 data class PaymentConfirmScreen(
     val providerId: String,
@@ -51,15 +53,26 @@ data class PaymentConfirmScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(stringResource(R.string.payment_confirmation), fontWeight = FontWeight.Bold) },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.payment_confirmation),
+                            fontFamily = SatoshiBold,
+                            fontSize = 20.sp
+                        )
+                    },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(
+                                painter = painterResource(id = R.drawable.back),
+                                contentDescription = "Back",
+                                modifier = Modifier.size(24.dp)
+                            )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.background,
-                        titleContentColor = MaterialTheme.colorScheme.onBackground
+                        titleContentColor = MaterialTheme.colorScheme.onBackground,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
             },
@@ -83,7 +96,7 @@ data class PaymentConfirmScreen(
                     Box(modifier = Modifier.size(40.dp).clip(RoundedCornerShape(8.dp)).background(Color(0xFF00796B)))
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
-                        Text("Karta • ${cardPan.takeLast(4)}", fontWeight = FontWeight.Medium)
+                        Text("Karta • ${cardPan.takeLast(4)}", fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
                     }
                 }
 
@@ -91,7 +104,7 @@ data class PaymentConfirmScreen(
                 
                 // Direction icon
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Text("↓", fontSize = 24.sp, color = Color.Gray)
+                    Text("↓", fontSize = 24.sp, color = MaterialTheme.colorScheme.secondary)
                 }
                 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -105,25 +118,25 @@ data class PaymentConfirmScreen(
                         .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(modifier = Modifier.size(40.dp).clip(CircleShape).background(Color.LightGray), contentAlignment = Alignment.Center) {
-                        Text(providerName.take(1).uppercase(), fontWeight = FontWeight.Bold, color = Color.White)
+                    Box(modifier = Modifier.size(40.dp).clip(CircleShape).background(MaterialTheme.colorScheme.surfaceVariant), contentAlignment = Alignment.Center) {
+                        Text(providerName.take(1).uppercase(), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
-                        Text(providerName, fontWeight = FontWeight.Medium)
-                        Text("OOO \"UNITEL\"", fontSize = 12.sp, color = Color.Gray)
+                        Text(providerName, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
+                        Text("OOO \"UNITEL\"", fontSize = 12.sp, color = MaterialTheme.colorScheme.secondary)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                Text(stringResource(R.string.payment_enter_account), fontSize = 12.sp, color = Color.Gray)
-                Text(account, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                Text(stringResource(R.string.payment_enter_account), fontSize = 12.sp, color = MaterialTheme.colorScheme.secondary)
+                Text(account, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(stringResource(R.string.payment_amount), fontSize = 12.sp, color = Color.Gray)
-                Text("$amount so'm", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                Text(stringResource(R.string.payment_amount), fontSize = 12.sp, color = MaterialTheme.colorScheme.secondary)
+                Text("$amount so'm", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -144,7 +157,7 @@ data class PaymentConfirmScreen(
 
                 Text(
                     stringResource(R.string.payment_commission, "0"),
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -160,13 +173,13 @@ data class PaymentConfirmScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF10B981),
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     enabled = !uiState.isLoading
                 ) {
                     if (uiState.isLoading) {
-                        CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
                     } else {
                         Text(stringResource(R.string.payment_pay), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }

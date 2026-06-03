@@ -30,6 +30,7 @@ import uz.gita.paynetclone.ui.theme.SatoshiMedium
 @Composable
 fun PaynetTopHeader(
     phoneNumber: String?,
+    isKycVerified: Boolean? = false,
     onProfileClicked: () -> Unit,
     onQrClicked: () -> Unit,
     onChatClicked: () -> Unit
@@ -84,7 +85,7 @@ fun PaynetTopHeader(
                 Row(
                     modifier = Modifier
                         .background(
-                            MaterialTheme.colorScheme.inversePrimary,
+                            if (isKycVerified == true) androidx.compose.ui.graphics.Color(0xFFDCFCE7) else MaterialTheme.colorScheme.inversePrimary,
                             RoundedCornerShape(50)
                         )
                         .height(20.dp)
@@ -94,15 +95,18 @@ fun PaynetTopHeader(
                     Image(
                         painter = painterResource(R.drawable.shield),
                         modifier = Modifier.size(10.dp),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background),
+                        colorFilter = ColorFilter.tint(
+                            if (isKycVerified == true) androidx.compose.ui.graphics.Color(0xFF15803D)
+                            else MaterialTheme.colorScheme.background
+                        ),
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(2.dp))
                     Text(
-                        text = stringResource(R.string.partially_protected),
+                        text = if (isKycVerified == true) stringResource(R.string.kyc_fully_protected) else stringResource(R.string.partially_protected),
                         fontSize = 10.sp,
                         fontFamily = SatoshiMedium,
-                        color = MaterialTheme.colorScheme.background
+                        color = if (isKycVerified == true) androidx.compose.ui.graphics.Color(0xFF15803D) else MaterialTheme.colorScheme.background
                     )
                 }
             }

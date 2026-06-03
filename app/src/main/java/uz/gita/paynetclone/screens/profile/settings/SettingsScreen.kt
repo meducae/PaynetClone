@@ -58,9 +58,14 @@ fun SettingsScreenContent(
     onLogoutClick: () -> Unit,
     onVerifyClick: () -> Unit
 ) {
-    val isVerified = kycStatus?.status?.equals("approved", ignoreCase = true) == true
-    val isPending = kycStatus?.status?.equals("pending", ignoreCase = true) == true
-    val isRejected = kycStatus?.status?.equals("rejected", ignoreCase = true) == true
+    val status = kycStatus?.status
+    val isVerified = status?.equals("approved", ignoreCase = true) == true || 
+                     status?.equals("verified", ignoreCase = true) == true || 
+                     status?.equals("completed", ignoreCase = true) == true
+    val isPending = status?.equals("pending", ignoreCase = true) == true || 
+                    status?.equals("in_progress", ignoreCase = true) == true
+    val isRejected = status?.equals("rejected", ignoreCase = true) == true || 
+                     status?.equals("failed", ignoreCase = true) == true
 
     Scaffold(
         topBar = {

@@ -18,6 +18,7 @@ interface HomeContract {
         object OnChatClicked : Intent
         object OnAddedClicked : Intent
         object OnMyCardsClicked : Intent
+        object OnTransferClicked : Intent
         object LoadProfile : Intent
         object Refresh : Intent
         object Logout : Intent
@@ -28,5 +29,6 @@ interface HomeContract {
         object NavigateToChat : SideEffect
         object NavigateToAddCard : SideEffect
         object NavigateToMyCards : SideEffect
+        object NavigateToTransfers : SideEffect
     }
 }

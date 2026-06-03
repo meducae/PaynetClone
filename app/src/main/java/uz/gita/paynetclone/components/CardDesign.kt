@@ -74,8 +74,12 @@ fun PaynetCardItem(
                 )
             }
 
+            val currencyText = when (card.currency.uppercase()) {
+                "UZS", "UZ" -> stringResource(R.string.som)
+                else -> card.currency
+            }
             Text(
-                text = "${formatBalance(card.balance)} ${stringResource(R.string.som)}",
+                text = "${formatBalance(card.balance)} $currencyText",
                 color = Color.White,
                 fontFamily = SatoshiBold,
                 fontSize = 38.sp,

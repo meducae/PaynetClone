@@ -62,6 +62,25 @@ class CardRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun deleteCard(cardId: String): Flow<Result<Unit>> = flow {
+        try {
+            val response = cardApi.deleteCard(cardId)
+            val body = response.body()
+
+            if (response.isSuccessful && body != null && body.success) {
+                emit(Result.success(Unit))
+            } else {
+                val errorMessage = parseErrorBody(response.errorBody())
+                    ?: body?.error?.message
+                    ?: "HTTP ${response.code()}: ${response.message()}"
+                emit(Result.failure(Exception(errorMessage)))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+
     private fun parseErrorBody(errorBody: ResponseBody?): String? {
         return try {
             val raw = errorBody?.string() ?: return null

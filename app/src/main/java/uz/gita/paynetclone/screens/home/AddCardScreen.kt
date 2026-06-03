@@ -165,7 +165,6 @@ fun AddCardScreenContent(
     var selectedGradient by remember { mutableStateOf(gradients[0]) }
 
     Scaffold(
-        modifier = Modifier.systemBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(

@@ -39,16 +39,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
+import androidx.compose.ui.res.painterResource
+import androidx.compose.runtime.remember
 import cafe.adriel.voyager.hilt.getViewModel
 import uz.gita.paynetclone.R
 import uz.gita.paynetclone.components.PaynetBottomNavigation
 import uz.gita.paynetclone.presenter.services.ServicesContract
 import uz.gita.paynetclone.presenter.services.ServicesViewModel
 
-class ServicesScreen : Screen {
-    override val key: ScreenKey = "services.main"
+object ServicesTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val title = stringResource(R.string.nav_services)
+            val icon = painterResource(R.drawable.widgets_outline)
+            return remember { TabOptions(index = 4u, title = title, icon = icon) }
+        }
 
     @Composable
     override fun Content() {
@@ -113,8 +121,7 @@ fun ServicesScreenContent(
     )
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { PaynetBottomNavigation(selectedIndex = 4) }
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier

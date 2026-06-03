@@ -44,11 +44,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import uz.gita.paynetclone.entity.payment.Provider
 import uz.gita.paynetclone.presenter.payment.PaymentViewModel
-import uz.gita.paynetclone.ui.theme.PaynetGreen
+import androidx.compose.ui.res.painterResource
+import uz.gita.paynetclone.R
+import uz.gita.paynetclone.ui.theme.SatoshiBold
 
-class PaymentCategoryProvidersScreen(
-    private val categoryId: String,
-    private val categoryName: String
+data class PaymentCategoryProvidersScreen(
+    val categoryId: String,
+    val categoryName: String
 ) : Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -71,21 +73,23 @@ class PaymentCategoryProvidersScreen(
                         Text(
                             text = categoryName,
                             fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
+                            fontFamily = SatoshiBold,
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                painter = painterResource(id = R.drawable.back),
+                                contentDescription = "Back",
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.background,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onBackground
+                        navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+                        titleContentColor = MaterialTheme.colorScheme.onBackground
                     )
                 )
             },
@@ -99,7 +103,7 @@ class PaymentCategoryProvidersScreen(
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        color = PaynetGreen
+                        color = MaterialTheme.colorScheme.primary
                     )
                 } else if (filteredProviders.isEmpty()) {
                     Text(
@@ -155,12 +159,12 @@ fun CategoryProviderItem(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFE5E7EB)),
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = provider.name.take(1).uppercase(),
-                    color = Color.DarkGray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )

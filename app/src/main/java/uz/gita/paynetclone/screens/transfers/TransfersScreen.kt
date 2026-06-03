@@ -35,7 +35,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.hilt.getViewModel
 import kotlinx.coroutines.flow.collectLatest
 import uz.gita.paynetclone.R
@@ -47,7 +48,14 @@ import uz.gita.paynetclone.presenter.transfers.TransfersViewModel
 import uz.gita.paynetclone.ui.theme.SatoshiBold
 import uz.gita.paynetclone.ui.theme.SatoshiMedium
 
-class TransfersScreen : Screen {
+object TransfersTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val title = stringResource(R.string.nav_transfers)
+            val icon = painterResource(R.drawable.repeat)
+            return remember { TabOptions(index = 1u, title = title, icon = icon) }
+        }
     @Composable
     override fun Content() {
         val viewModel: TransfersViewModel = getViewModel()
@@ -60,7 +68,7 @@ class TransfersScreen : Screen {
                     is TransfersContract.SideEffect.ShowToast -> {
                         Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                     }
-                    else -> { /* Handle other side effects */ }
+                    else -> {  }
                 }
             }
         }
@@ -80,13 +88,7 @@ fun TransfersContent(
 ) {
     val sheetState = rememberModalBottomSheetState()
 
-    Scaffold(
-        bottomBar = {
-            if (state.transferStep == TransfersContract.TransferStep.SEARCH && !state.isSearching) {
-                PaynetBottomNavigation(selectedIndex = 1)
-            }
-        }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -616,9 +618,16 @@ fun TransferConfirmationContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        DetailItem(label = stringResource(R.string.you_are_transferring), value = "${state.amount} ${stringResource(R.string.som)}")
-        DetailItem(label = stringResource(R.string.commission), value = "0 ${stringResource(R.string.som)}")
-        DetailItem(label = stringResource(R.string.will_be_debited), value = "${state.amount} ${stringResource(R.string.som)}")
+        val currencyText = state.selectedFromCard?.let { card ->
+            when (card.currency.uppercase(java.util.Locale.ROOT)) {
+                "UZS", "UZ" -> stringResource(R.string.som)
+                else -> card.currency
+            }
+        } ?: stringResource(R.string.som)
+
+        DetailItem(label = stringResource(R.string.you_are_transferring), value = "${state.amount} $currencyText")
+        DetailItem(label = stringResource(R.string.commission), value = "0 $currencyText")
+        DetailItem(label = stringResource(R.string.will_be_debited), value = "${state.amount} $currencyText")
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -669,6 +678,10 @@ fun CardSelectionBottomSheetContent(
 
         cards.forEach { card ->
             val isSelected = card.id == selectedCard?.id
+            val currencyText = when (card.currency.uppercase(java.util.Locale.ROOT)) {
+                "UZS", "UZ" -> stringResource(R.string.som)
+                else -> card.currency
+            }
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -698,12 +711,12 @@ fun CardSelectionBottomSheetContent(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "AgroBank • ${card.maskedNumber.takeLast(4)}",
+                            text = "${card.type} • ${card.maskedNumber.takeLast(4)}",
                             fontFamily = SatoshiBold,
                             fontSize = 16.sp
                         )
                         Text(
-                            text = "${card.balance} so'm",
+                            text = "${formatBalance(card.balance)} $currencyText",
                             color = Color.Gray,
                             fontSize = 14.sp
                         )
@@ -724,6 +737,10 @@ fun CardSelectionBottomSheetContent(
 
 @Composable
 fun SourceCardItem(card: Card, onClick: () -> Unit) {
+    val currencyText = when (card.currency.uppercase(java.util.Locale.ROOT)) {
+        "UZS", "UZ" -> stringResource(R.string.som)
+        else -> card.currency
+    }
     Surface(
         modifier = Modifier.fillMaxWidth().clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
@@ -736,8 +753,8 @@ fun SourceCardItem(card: Card, onClick: () -> Unit) {
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = "AgroBank • ${card.maskedNumber.takeLast(4)}", fontFamily = SatoshiBold, fontSize = 16.sp)
-                Text(text = "${card.balance} so'm", color = Color.Gray, fontSize = 14.sp)
+                Text(text = "${card.type} • ${card.maskedNumber.takeLast(4)}", fontFamily = SatoshiBold, fontSize = 16.sp)
+                Text(text = "${formatBalance(card.balance)} $currencyText", color = Color.Gray, fontSize = 14.sp)
             }
             Icon(painter = painterResource(id = R.drawable.down), contentDescription = null, modifier = Modifier.size(20.dp).graphicsLayer(rotationZ = 270f), tint = Color.Gray)
         }
@@ -1066,6 +1083,7 @@ fun TabItem(
     Surface(
         modifier = modifier
             .fillMaxHeight()
+            .clip(RoundedCornerShape(10.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
         color = if (isSelected) Color.White else Color.Transparent,
@@ -1116,7 +1134,12 @@ fun TransferSuccessContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        val currencyText = state.selectedFromCard?.let { card ->
+            when (card.currency.uppercase(java.util.Locale.ROOT)) {
+                "UZS", "UZ" -> stringResource(R.string.som)
+                else -> card.currency
+            }
+        } ?: stringResource(R.string.som)
 
         Row(
             verticalAlignment = Alignment.Bottom
@@ -1129,7 +1152,7 @@ fun TransferSuccessContent(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "so'm",
+                text = currencyText,
                 fontFamily = SatoshiBold,
                 fontSize = 24.sp,
                 color = Color.Gray,
@@ -1143,7 +1166,7 @@ fun TransferSuccessContent(
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Text(
-                text = "Komissiya 0 so'm",
+                text = "${stringResource(R.string.commission)} 0 $currencyText",
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                 fontSize = 14.sp,
                 fontFamily = SatoshiMedium,
@@ -1321,5 +1344,14 @@ fun TransferOptionItem(
                 }
             }
         }
+    }
+}
+
+private fun formatBalance(balance: Long): String {
+    val symbols = java.text.DecimalFormatSymbols(java.util.Locale.US).apply {
+        groupingSeparator = ' '
+    }
+    return java.text.DecimalFormat("#,###", symbols).format(balance).let {
+        if (it.isEmpty()) "0" else it
     }
 }

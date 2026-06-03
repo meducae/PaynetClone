@@ -33,6 +33,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricManager
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.hilt.getViewModel
@@ -46,11 +52,57 @@ import uz.gita.paynetclone.presenter.navigation.LocalAppNavigator
 import uz.gita.paynetclone.ui.theme.SatoshiBold
 import uz.gita.paynetclone.ui.theme.SatoshiMedium
 
+fun Context.findActivity(): FragmentActivity? {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is FragmentActivity) return context
+        context = context.baseContext
+    }
+    return null
+}
+
+private fun triggerBiometricPrompt(
+    context: Context,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+) {
+    val activity = context.findActivity() ?: return
+    val executor = ContextCompat.getMainExecutor(activity)
+    val biometricPrompt = BiometricPrompt(
+        activity,
+        executor,
+        object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                onSuccess()
+            }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                if (errorCode != BiometricPrompt.ERROR_USER_CANCELED && 
+                    errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON &&
+                    errorCode != BiometricPrompt.ERROR_CANCELED) {
+                    onError(errString.toString())
+                }
+            }
+        }
+    )
+
+    val promptInfo = BiometricPrompt.PromptInfo.Builder()
+        .setTitle(activity.getString(R.string.biometric_title))
+        .setSubtitle(activity.getString(R.string.biometric_subtitle))
+        .setNegativeButtonText(activity.getString(R.string.cancel))
+        .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.BIOMETRIC_STRONG)
+        .build()
+
+    biometricPrompt.authenticate(promptInfo)
+}
+
 class PinScreen(private val isNewUser: Boolean) : Screen {
     override val key: ScreenKey = "auth.pin.${if (isNewUser) "new" else "existing"}"
 
     @Composable
-    override fun Content() {
+        override fun Content() {
         val viewModel: PinViewModel = getViewModel()
         val state by viewModel.state.collectAsState()
         val navigator = LocalAppNavigator.current
@@ -59,6 +111,17 @@ class PinScreen(private val isNewUser: Boolean) : Screen {
         LaunchedEffect(Unit) {
             viewModel.setInitialMode(isNewUser)
         }
+
+        LaunchedEffect(state.mode) {
+            if (state.mode == PinMode.ENTER) {
+                triggerBiometricPrompt(
+                    context = context,
+                    onSuccess = { viewModel.onEvent(PinIntent.OnBiometricSuccess) },
+                    onError = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                )
+            }
+        }
+
         LaunchedEffect(viewModel) {
             viewModel.sideEffect.collectLatest { effect ->
                 when (effect) {
@@ -67,6 +130,13 @@ class PinScreen(private val isNewUser: Boolean) : Screen {
                     }
                     is PinSideEffect.ShowError -> {
                         Toast.makeText(context, effect.message.asString(context), Toast.LENGTH_SHORT).show()
+                    }
+                    PinSideEffect.ShowBiometricPrompt -> {
+                        triggerBiometricPrompt(
+                            context = context,
+                            onSuccess = { viewModel.onEvent(PinIntent.OnBiometricSuccess) },
+                            onError = { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                        )
                     }
                 }
             }
@@ -173,7 +243,7 @@ fun PinScreenContent(
             onDeleteClick = { onIntent(PinIntent.OnDeleteClicked) },
             onForgotClick = { onIntent(PinIntent.OnForgotClicked) },
             onBiometricClick = { onIntent(PinIntent.OnBiometricClicked) },
-            showBiometric = state.mode == PinMode.ENTER
+            showBiometric = state.mode == PinMode.ENTER && state.pin.isEmpty()
         )
         Spacer(modifier = Modifier.height(48.dp))
     }

@@ -50,16 +50,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
+import androidx.compose.runtime.remember
 import cafe.adriel.voyager.hilt.getViewModel
 import uz.gita.paynetclone.R
 import uz.gita.paynetclone.components.PaynetBottomNavigation
 import uz.gita.paynetclone.presenter.history.HistoryContract
 import uz.gita.paynetclone.presenter.history.HistoryViewModel
 
-class HistoryScreen : Screen {
-    override val key: ScreenKey = "history.main"
+object HistoryTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val title = stringResource(R.string.nav_history)
+            val icon = painterResource(R.drawable.time)
+            return remember { TabOptions(index = 3u, title = title, icon = icon) }
+        }
 
     @Composable
     override fun Content() {
@@ -79,8 +86,7 @@ fun HistoryScreenContent(
     onEvent: (HistoryContract.Intent) -> Unit
 ) {
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { PaynetBottomNavigation(selectedIndex = 3) }
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier

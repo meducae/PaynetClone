@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -28,10 +28,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -99,12 +107,62 @@ fun CardDetailsContent(
     state: CardDetailsContract.State,
     onEvent: (CardDetailsContract.Intent) -> Unit
 ) {
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = {
+                Text(
+                    text = stringResource(R.string.delete_card_confirm_title),
+                    fontFamily = SatoshiBold,
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.delete_card_confirm_desc),
+                    fontFamily = SatoshiMedium,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                        onEvent(CardDetailsContract.Intent.OnDeleteCardClicked)
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.delete),
+                        fontFamily = SatoshiBold,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(
+                        text = stringResource(R.string.cancel),
+                        fontFamily = SatoshiMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 6.dp,
+            shape = RoundedCornerShape(24.dp)
+        )
+    }
+
     Scaffold(
         topBar = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .safeDrawingPadding()
+                    .statusBarsPadding()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(horizontal = 8.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -166,28 +224,28 @@ fun CardDetailsContent(
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFF00964E).copy(alpha = 0.1f)),
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.shield),
                             contentDescription = null,
-                            tint = Color(0xFF00964E),
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(24.dp)
                         )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Column (){
                         Text(
-                            text = stringResource(R.string.verify_identity),
+                            text = if (state.isKycVerified) stringResource(R.string.kyc_status_approved_title) else stringResource(R.string.verify_identity),
                             fontFamily = SatoshiBold,
                             fontSize = 15.sp
                         )
                         Text(
-                            text = stringResource(R.string.verify_identity_desc),
+                            text = if (state.isKycVerified) stringResource(R.string.kyc_status_approved_desc) else stringResource(R.string.verify_identity_desc),
                             fontFamily = SatoshiMedium,
                             fontSize = 13.sp,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                 }
@@ -195,48 +253,50 @@ fun CardDetailsContent(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onEvent(CardDetailsContract.Intent.OnVerifyClicked) },
-                shape = RoundedCornerShape(20.dp),
-                color = Color(0xFFF0F7FF),
-                tonalElevation = 0.dp
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+            if (!state.isKycVerified) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onEvent(CardDetailsContract.Intent.OnVerifyClicked) },
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    tonalElevation = 0.dp
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.remove_limits_desc),
+                                fontFamily = SatoshiMedium,
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Icon(
+                                painter = painterResource(id = R.drawable.arrowback),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier
+                                    .size(14.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp)
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(R.string.remove_limits_desc),
+                            text = stringResource(
+                                R.string.remaining_transfers,
+                                state.remainingTransfers,
+                                state.maxTransfers
+                            ),
                             fontFamily = SatoshiMedium,
-                            fontSize = 13.sp,
-                            color = Color(0xFF1976D2),
-                            modifier = Modifier.weight(1f)
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrowback),
-                            contentDescription = null,
-                            tint = Color(0xFF1976D2),
-                            modifier = Modifier
-                                .size(14.dp)
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    HorizontalDivider(color = Color(0xFFD1E4F9), thickness = 0.5.dp)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(
-                            R.string.remaining_transfers,
-                            state.remainingTransfers,
-                            state.maxTransfers
-                        ),
-                        fontFamily = SatoshiMedium,
-                        fontSize = 12.sp,
-                        color = Color(0xFF1976D2)
-                    )
                 }
             }
 
@@ -300,7 +360,7 @@ fun CardDetailsContent(
                             text = stringResource(R.string.qr_cashout_desc),
                             fontFamily = SatoshiMedium,
                             fontSize = 13.sp,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                 }
@@ -325,7 +385,7 @@ fun CardDetailsContent(
                         text = stringResource(R.string.no_payments_yet),
                         fontFamily = SatoshiMedium,
                         fontSize = 14.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                     Spacer(modifier = Modifier.height(30.dp))
@@ -374,7 +434,7 @@ fun CardDetailsContent(
                         text = stringResource(R.string.settings),
                         fontFamily = SatoshiBold,
                         fontSize = 14.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                     Row(
@@ -389,7 +449,7 @@ fun CardDetailsContent(
                                 painter = painterResource(id = R.drawable.star),
                                 contentDescription = null,
                                 modifier = Modifier.size(24.dp),
-                                tint = Color.Gray
+                                tint = MaterialTheme.colorScheme.secondary
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
@@ -403,11 +463,37 @@ fun CardDetailsContent(
                             onCheckedChange = { onEvent(CardDetailsContract.Intent.OnMainCardChanged(it)) },
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = Color.White,
-                                checkedTrackColor = Color(0xFF00964E),
+                                checkedTrackColor = MaterialTheme.colorScheme.primary,
                                 uncheckedThumbColor = Color.White,
-                                uncheckedTrackColor = Color.LightGray,
+                                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
                                 uncheckedBorderColor = Color.Transparent
                             )
+                        )
+                    }
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        thickness = 0.5.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { showDeleteDialog = true }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(R.string.delete_card),
+                            fontFamily = SatoshiMedium,
+                            fontSize = 15.sp,
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }
@@ -441,7 +527,7 @@ fun ActionBtn(
             Icon(
                 painter = painterResource(id = icon),
                 contentDescription = null,
-                tint = Color(0xFF00964E),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .size(24.dp)
                     .graphicsLayer(rotationZ = iconRotation)
@@ -476,7 +562,7 @@ fun SettingsRow(
                 painter = painterResource(id = icon),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
-                tint = Color.Gray
+                tint = MaterialTheme.colorScheme.secondary
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
@@ -488,7 +574,7 @@ fun SettingsRow(
         Icon(
             painter = painterResource(id = R.drawable.arrowback),
             contentDescription = null,
-            tint = Color.LightGray,
+            tint = MaterialTheme.colorScheme.outline,
             modifier = Modifier
                 .size(16.dp)
                 .graphicsLayer(rotationZ = 180f)
